@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Configuration;
 using Escc.Net;
+using Exceptionless;
 
 namespace Escc.GoogleAnalytics.Admin
 {
@@ -11,20 +12,28 @@ namespace Escc.GoogleAnalytics.Admin
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Keyword importing started ...");
+            try
+            {
+                Exceptionless.ExceptionlessClient.Current.Startup();
 
-            var source = new GoogleAnalyticsKeywordSource(new ConfigurationProxyProvider());
-            var keywords = source.ReadKeywords();
+                Console.WriteLine("Keyword importing started ...");
 
-            Console.WriteLine("Keywords cleaned and ready to import" + keywords.Count.ToString());
+                var source = new GoogleAnalyticsKeywordSource(new ConfigurationProxyProvider());
+                var keywords = source.ReadKeywords();
 
-            var repo = new SqlServerKeywordRepository();
-            repo.SaveKeywords(keywords);
+                Console.WriteLine("Keywords cleaned and ready to import" + keywords.Count.ToString());
 
-            Console.WriteLine("Keywords imported to database");
+                var repo = new SqlServerKeywordRepository();
+                repo.SaveKeywords(keywords);
+
+                Console.WriteLine("Keywords imported to database");
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+            }
+
         }
+
     }
-
-
-
 }

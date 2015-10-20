@@ -45,8 +45,20 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Escc.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06fad7304560ae6f, processorArchitecture=MSIL">
       <HintPath>..\packages\Escc.Net.1.0.1\lib\Escc.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Exceptionless, Version=1.5.2121.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
+      <HintPath>..\packages\Exceptionless.1.5.2121\lib\net45\Exceptionless.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Exceptionless.Models, Version=1.5.2121.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
+      <HintPath>..\packages\Exceptionless.1.5.2121\lib\net45\Exceptionless.Models.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.GData.Analytics, Version=2.2.0.0, Culture=neutral, PublicKeyToken=9e229226d7996434, processorArchitecture=MSIL">
@@ -60,12 +72,6 @@
     <Reference Include="Google.GData.Extensions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0b4c5df2ebf20876, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.GData.Extensions.2.2.0.0\lib\Google.GData.Extensions.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.Data">
-      <HintPath>S:\_Reference DLLs\Microsoft Data Access Application Block 2.0\Release strong-named .NET 2.0\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.ExceptionManagement">
-      <HintPath>S:\_Reference DLLs\Microsoft Exception Management Application Block\Release strong-named .NET 2\Microsoft.ApplicationBlocks.ExceptionManagement.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -108,6 +114,9 @@
     <None Include="Hunspellx86.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlServer\Escc.Search.AutoComplete.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

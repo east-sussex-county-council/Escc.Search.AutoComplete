@@ -4,8 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.Services;
-using Microsoft.ApplicationBlocks.Data;
-using Microsoft.ApplicationBlocks.ExceptionManagement;
+using Exceptionless;
 
 namespace Escc.GoogleAnalytics
 {
@@ -34,19 +33,25 @@ namespace Escc.GoogleAnalytics
                 catch (NullReferenceException ex)
                 {
                     ex.Data.Add("Connection string missing from web.config", "Escc.Search.AutoComplete.Reader");
-                    ExceptionManager.Publish(ex);
+                    ex.ToExceptionless().Submit();
                     throw;
                 }
 
                 var parameter = new SqlParameter("@SearchTerm", SqlDbType.VarChar, 500);
                 parameter.Value = searchTerm;
 
-                DataSet matchedKeywords = null;
+                DataSet matchedKeywords = new DataSet();
                 List<string> keywords = new List<string>();
 
                 try
                 {
-                    matchedKeywords = SqlHelper.ExecuteDataset(cn, CommandType.StoredProcedure, "usp_InSearchKeywords_Select_BySearchTerm", parameter);
+                    var command = cn.CreateCommand();
+                    command.CommandText = "usp_InSearchKeywords_Select_BySearchTerm";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(parameter);
+                    var adapter = new SqlDataAdapter(command);
+                    adapter.Fill(matchedKeywords);
+                    
                     foreach (DataRow row in matchedKeywords.Tables[0].Rows)
                     {
                         keywords.Add(row["Keyword"].ToString());
@@ -58,13 +63,13 @@ namespace Escc.GoogleAnalytics
                 }
                 catch (SqlException ex)
                 {
-                    ExceptionManager.Publish(ex);
+                    ex.ToExceptionless().Submit();
                     throw;
                 }
             }
             catch (Exception ex)
             {
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
                 throw;
             }
             finally
