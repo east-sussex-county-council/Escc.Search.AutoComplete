@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
-namespace Escc.GoogleAnalytics.Admin
+namespace Escc.GoogleAnalytics.Admin.SqlServer
 {
     public class SqlServerKeywordRepository : IKeywordRepository
     {
@@ -25,7 +25,7 @@ namespace Escc.GoogleAnalytics.Admin
 
                     var parameters = new DynamicParameters();
                     parameters.Add("@Keyword", keywords[i].Keyword, DbType.AnsiString);
-                    parameters.Add("@Pageviews", keywords[i].Pageviews, DbType.Int32);
+                    parameters.Add("@Pageviews", keywords[i].PageViews, DbType.Int32);
 
                     cn.Execute("usp_InSearchKeywords_Insert_Keyword", parameters, commandType: CommandType.StoredProcedure);
                 }

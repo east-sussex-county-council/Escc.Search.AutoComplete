@@ -8,6 +8,8 @@ namespace Escc.GoogleAnalytics.Admin
     public class KeywordResult
     {
         public string Keyword { get; set; }
-        public int Pageviews { get; set; }
+        public int PageViews { get; set; }
+
+        public DateTime FeedDate { get; set; }
     }
 }

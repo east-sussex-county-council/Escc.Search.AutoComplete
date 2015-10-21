@@ -98,13 +98,13 @@ namespace Escc.GoogleAnalytics.Admin
                 if (matchIndex > -1)
                 {
                     // Match keyword and get page views
-                    int matchedKeywordPageViewCount = keywords[matchIndex].Pageviews;
+                    int matchedKeywordPageViewCount = keywords[matchIndex].PageViews;
 
                     // Increment page views to include duplicate page views
                     matchedKeywordPageViewCount += Convert.ToInt32(item.Metrics[0].Value);
 
                     // Update page views for keyword
-                    keywords[matchIndex].Pageviews = matchedKeywordPageViewCount;
+                    keywords[matchIndex].PageViews = matchedKeywordPageViewCount;
                 }
                 else
                 {
@@ -115,7 +115,7 @@ namespace Escc.GoogleAnalytics.Admin
                     if (checkedKeyword.Length > 0)
                     {
 
-                        keywords.Add(new KeywordResult() { Keyword = checkedKeyword, Pageviews = Convert.ToInt32(item.Metrics[0].Value) });
+                        keywords.Add(new KeywordResult() { Keyword = checkedKeyword, PageViews = Convert.ToInt32(item.Metrics[0].Value) });
 
 
                     }
@@ -127,7 +127,7 @@ namespace Escc.GoogleAnalytics.Admin
 
 
             // Rule 5 reorder based on pageviews in descending order
-            return keywords.OrderByDescending(x => x.Pageviews).ToList();
+            return keywords.OrderByDescending(x => x.PageViews).ToList();
         }
 
 
