@@ -33,12 +33,24 @@ namespace Escc.Search.AutoComplete.Admin.AzureTableStorage
 
             foreach (var keyword in keywords)
             {
-                // Use a sanitised version of the keyword as the partition key because it's indexed for lookups,
-                // but also save the keyword as-typed to present back to users
+                // Azure tables use an index clustered first by partition key then by row key.
+                //
+                // When we look up a keyword we will want matching search terms ordered by page views.
+                // To get that we need to have results ordered by page views, then filter the list to only search terms that match, 
+                // which means the partition key has to be based on page views and the row key based on search terms.
+                //
+                // The partition key is a string, so convert the number of page views to a string and pad with leading 0s so that
+                // the alpha sort gives the same result as a numeric sort. However this still sorts low numbers of page views ahead
+                // of high, so we need to change low numbers to high ones and vice versa to get the right sort order. Subtracting 1000000
+                // makes the numbers of page views negative (assuming they're under 1000000), and multiplying by -1 removes the minus sign,
+                // giving us the sort order we want.
+                //
+                // The row key has to be a sanitised version of the keyword because a key can't contain common search term characters such 
+                // as / and ?, so save the keyword separately as-typed so that it can be presented back to users.
                 var entity = new KeywordEntity()
                 {
-                    PartitionKey =  ToAzureKeyString(keyword.Keyword),
-                    RowKey = keyword.PageViews.ToString("D7"),
+                    PartitionKey = (( keyword.PageViews - 1000000) * -1).ToString("D8"),
+                    RowKey = ToAzureKeyString(keyword.Keyword),
                     Keyword = keyword.Keyword,
                     FeedDate = keyword.FeedDate.ToShortDateString()
                 };

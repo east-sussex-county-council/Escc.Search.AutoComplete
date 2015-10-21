@@ -5,8 +5,6 @@ using System.Linq;
 using System.Configuration;
 using Escc.Net;
 using Exceptionless;
-using Escc.GoogleAnalytics.Admin.SqlServer;
-using Escc.Search.AutoComplete.Admin.SqlServer;
 using Escc.Search.AutoComplete.Admin.AzureTableStorage;
 
 namespace Escc.GoogleAnalytics.Admin
@@ -15,19 +13,22 @@ namespace Escc.GoogleAnalytics.Admin
     {
         static void Main(string[] args)
         {
+            TransferKeywords(new GoogleAnalyticsKeywordSource(new ConfigurationProxyProvider()), new AzureTableStorageKeywordRepository());
+        }
+
+        private static void TransferKeywords(IKeywordSource source, IKeywordRepository destination)
+        {
             try
             {
                 Exceptionless.ExceptionlessClient.Current.Startup();
 
                 Console.WriteLine("Keyword importing started ...");
 
-                var source = new SqlServerKeywordSource();
                 var keywords = source.ReadKeywords();
 
                 Console.WriteLine("Keywords cleaned and ready to import: " + keywords.Count.ToString());
 
-                var repo = new AzureTableStorageKeywordRepository();
-                repo.SaveKeywords(keywords);
+                destination.SaveKeywords(keywords);
 
                 Console.WriteLine("Keywords imported. Press Enter to finish.");
                 Console.ReadLine();
@@ -39,8 +40,6 @@ namespace Escc.GoogleAnalytics.Admin
                 Console.WriteLine("Press Enter to finish.");
                 Console.ReadLine();
             }
-
         }
-
     }
 }
