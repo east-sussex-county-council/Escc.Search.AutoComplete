@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Globalization;
 using System.Web;
-using EsccWebTeam.Data.Web;
 using System.Data.SqlClient;
 using System.Data;
 using System.Collections.Generic;
 using System.Configuration;
 using Exceptionless;
 using Escc.Search.AutoComplete.AzureTableStorage;
+using Escc.Web;
 
 namespace Escc.Search.AutoComplete
 {
@@ -33,7 +33,7 @@ namespace Escc.Search.AutoComplete
 
         private void ProcessCorsHeaders(HttpContext context)
         {
-           Cors.AllowCrossOriginRequest(context.Request, context.Response, new ConfigurationCorsAllowedOriginsProvider().CorsAllowedOrigins());
+           new CorsHeaders(HttpContext.Current.Request.Headers, HttpContext.Current.Response.Headers, new CorsPolicyFromConfig().CorsPolicy).UpdateHeaders();
         }
 
       

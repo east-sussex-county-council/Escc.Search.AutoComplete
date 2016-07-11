@@ -130,7 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.example.config" />
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="dictionaries\en_GB.aff" />
     <None Include="dictionaries\en_GB.dic" />

@@ -6,6 +6,7 @@ using System.Configuration;
 using Escc.Net;
 using Exceptionless;
 using Escc.Search.AutoComplete.Admin.AzureTableStorage;
+using Escc.Search.AutoComplete.Admin.SqlServer;
 
 namespace Escc.GoogleAnalytics.Admin
 {
@@ -13,7 +14,7 @@ namespace Escc.GoogleAnalytics.Admin
     {
         static void Main(string[] args)
         {
-            TransferKeywords(new GoogleAnalyticsKeywordSource(new ConfigurationProxyProvider()), new AzureTableStorageKeywordRepository());
+            TransferKeywords(new SqlServerKeywordSource(), new AzureTableStorageKeywordRepository());
         }
 
         private static void TransferKeywords(IKeywordSource source, IKeywordRepository destination)
