@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Configuration;
-using Escc.Net;
-using Exceptionless;
+﻿using Escc.Search.AutoComplete.Admin;
 using Escc.Search.AutoComplete.Admin.AzureTableStorage;
-using Escc.Search.AutoComplete.Admin.SqlServer;
+using Escc.Search.AutoComplete.Admin.GoogleAnalytics;
+using Exceptionless;
+using System;
 
 namespace Escc.GoogleAnalytics.Admin
 {
     public class Program
     {
+        static Proxy proxy = new Proxy();
         static void Main(string[] args)
         {
-            TransferKeywords(new SqlServerKeywordSource(), new AzureTableStorageKeywordRepository());
+            TransferKeywords(new GoogleAnalyticsKeywordSourceApi4WithServiceAccount(), new AzureTableStorageKeywordRepository());
         }
 
         private static void TransferKeywords(IKeywordSource source, IKeywordRepository destination)
@@ -32,7 +29,7 @@ namespace Escc.GoogleAnalytics.Admin
                 destination.SaveKeywords(keywords);
 
                 Console.WriteLine("Keywords imported. Press Enter to finish.");
-                Console.ReadLine();
+                //Console.ReadLine();
             }
             catch (Exception ex)
             {

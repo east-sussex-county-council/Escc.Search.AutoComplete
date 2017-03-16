@@ -17,6 +17,7 @@ Thumbs.db
 *.tlh
 *.bak
 *.cache
+*.json
 *.ilk
 *.log
 [Bb]in
@@ -36,3 +37,4 @@ Properties/PublishProfiles/*
 packages
 .nuget/NuGet.targets
 *.GhostDoc.xml
+*.zip
