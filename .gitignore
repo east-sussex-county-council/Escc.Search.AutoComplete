@@ -38,3 +38,5 @@ packages
 .nuget/NuGet.targets
 *.GhostDoc.xml
 *.zip
+Secret.json
+client_secret.json

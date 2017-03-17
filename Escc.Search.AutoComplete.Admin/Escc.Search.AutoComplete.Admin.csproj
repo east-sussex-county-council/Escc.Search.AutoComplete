@@ -167,13 +167,11 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="client_secret.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="client_secret.json" />
     <None Include="packages.config" />
     <None Include="dictionaries\en_GB.aff" />
     <None Include="dictionaries\en_GB.dic" />
-    <None Include="Secret.json" />
+    <Content Include="Secret.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Hunspellx64.dll">

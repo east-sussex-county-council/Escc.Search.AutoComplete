@@ -93,20 +93,6 @@ namespace Escc.Search.AutoComplete.Admin.GoogleAnalytics
         return GoogleDataFeedToRemoveDuplicatesOrBadWords(response);
         }
 
-        static async Task<UserCredential> GetCredential()
-        {
-            using (var stream = new FileStream("client_secret.json",
-                 FileMode.Open, FileAccess.Read))
-            {
-                string loginEmailAddress = ConfigurationManager.AppSettings["GoogleUsername"];
-                return await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    new[] { AnalyticsReportingService.Scope.Analytics },
-                    loginEmailAddress, CancellationToken.None,
-                    new FileDataStore("GoogleAnalyticsApiConsole"));
-            }
-        }
-
         private static List<KeywordResult> GoogleDataFeedToRemoveDuplicatesOrBadWords(GetReportsResponse dataFeed)
         {
             // Rules to perform on transformation
