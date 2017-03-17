@@ -171,7 +171,7 @@
     <None Include="packages.config" />
     <None Include="dictionaries\en_GB.aff" />
     <None Include="dictionaries\en_GB.dic" />
-    <Content Include="Secret.json" />
+    <None Include="Secret.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Hunspellx64.dll">
