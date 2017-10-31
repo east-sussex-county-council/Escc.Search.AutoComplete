@@ -40,3 +40,4 @@ packages
 *.zip
 Secret.json
 client_secret.json
+.vs

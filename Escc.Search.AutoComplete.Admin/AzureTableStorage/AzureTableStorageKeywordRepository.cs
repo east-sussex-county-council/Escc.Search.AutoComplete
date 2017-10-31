@@ -31,6 +31,15 @@ namespace Escc.Search.AutoComplete.Admin.AzureTableStorage
             var table = tableClient.GetTableReference("autocomplete");
             table.CreateIfNotExistsAsync().Wait();
 
+            // Delete all the existing content
+            DeleteAllExistingEntities(table);
+
+            // Add the replacement content
+            AddNewEntities(keywords, table);
+        }
+
+        private static void AddNewEntities(List<KeywordResult> keywords, CloudTable table)
+        {
             foreach (var keyword in keywords)
             {
                 // Azure tables use an index clustered first by partition key then by row key.
@@ -49,7 +58,7 @@ namespace Escc.Search.AutoComplete.Admin.AzureTableStorage
                 // as / and ?, so save the keyword separately as-typed so that it can be presented back to users.
                 var entity = new KeywordEntity()
                 {
-                    PartitionKey = (( keyword.PageViews - 1000000) * -1).ToString("D8"),
+                    PartitionKey = ((keyword.PageViews - 1000000) * -1).ToString("D8"),
                     RowKey = ToAzureKeyString(keyword.Keyword),
                     Keyword = keyword.Keyword,
                     FeedDate = keyword.FeedDate.ToShortDateString()
@@ -68,6 +77,30 @@ namespace Escc.Search.AutoComplete.Admin.AzureTableStorage
                     if (ex.Message.Contains("(400) Bad Request"))
                     {
                         Console.WriteLine(keyword.Keyword + " returned " + ex.RequestInformation.ExtendedErrorInformation.ErrorMessage);
+                        ex.ToExceptionless().Submit();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+
+        private static void DeleteAllExistingEntities(CloudTable table)
+        {
+            var rangeQuery = new TableQuery<TableEntity>();
+            foreach (TableEntity entity in table.ExecuteQuery(rangeQuery))
+            {
+                try
+                {
+                    table.Execute(TableOperation.Delete(entity));
+                }
+                catch (StorageException ex)
+                {
+                    if (ex.Message.Contains("(400) Bad Request"))
+                    {
+                        Console.WriteLine(entity.RowKey + " returned " + ex.RequestInformation.ExtendedErrorInformation.ErrorMessage);
                         ex.ToExceptionless().Submit();
                     }
                     else

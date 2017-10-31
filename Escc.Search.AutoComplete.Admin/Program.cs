@@ -26,10 +26,13 @@ namespace Escc.GoogleAnalytics.Admin
 
                 Console.WriteLine("Keywords cleaned and ready to import: " + keywords.Count.ToString());
 
-                destination.SaveKeywords(keywords);
+                if (keywords.Count > 0)
+                {
+                    destination.SaveKeywords(keywords);
+                }
 
                 Console.WriteLine("Keywords imported. Press Enter to finish.");
-                //Console.ReadLine();
+                Console.ReadLine();
             }
             catch (Exception ex)
             {
