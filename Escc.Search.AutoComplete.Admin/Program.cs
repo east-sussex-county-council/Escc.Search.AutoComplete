@@ -31,15 +31,13 @@ namespace Escc.GoogleAnalytics.Admin
                     destination.SaveKeywords(keywords);
                 }
 
-                Console.WriteLine("Keywords imported. Press Enter to finish.");
-                Console.ReadLine();
+                Console.WriteLine("Keywords imported.");
             }
             catch (Exception ex)
             {
                 ex.ToExceptionless().Submit();
                 Console.WriteLine(ex.Message);
                 Console.WriteLine("Press Enter to finish.");
-                Console.ReadLine();
             }
         }
     }
