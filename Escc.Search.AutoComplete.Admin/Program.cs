@@ -19,7 +19,7 @@ namespace Escc.GoogleAnalytics.Admin
         {
             try
             {
-                Exceptionless.ExceptionlessClient.Current.Startup();
+                Exceptionless.ExceptionlessClient.Default.Startup();
 
                 if (!CheckEnvironmentPrecondition())
                 {
